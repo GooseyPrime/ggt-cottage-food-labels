@@ -17,6 +17,8 @@ export function Calculator() {
   const [inputs, setInputs] = useState<CostInputs>(defaults);
 
   const result = useMemo(() => calculatePricing(inputs), [inputs]);
+  const hasYieldError = Boolean(result.validationErrors.yieldUnits);
+  const hasMarginError = Boolean(result.validationErrors.marginPercent);
 
   function setField<K extends keyof CostInputs>(key: K, value: string) {
     const n = Number(value);
@@ -86,10 +88,11 @@ export function Calculator() {
           <input
             className="ggt-input"
             type="number"
-            min={0}
+            min={1}
             step="1"
             value={inputs.yieldUnits}
             onChange={(e) => setField("yieldUnits", e.target.value)}
+            aria-invalid={hasYieldError}
           />
         </label>
         <label className="ggt-field">
@@ -102,6 +105,7 @@ export function Calculator() {
             step="1"
             value={inputs.marginPercent}
             onChange={(e) => setField("marginPercent", e.target.value)}
+            aria-invalid={hasMarginError}
           />
         </label>
       </div>
@@ -120,13 +124,23 @@ export function Calculator() {
           Total batch: <strong>{formatMoney(result.totalCost)}</strong>
         </p>
         <p>
-          Unit cost: <strong>{formatMoney(result.unitCost)}</strong>
+          Unit cost: <strong>{hasYieldError ? "—" : formatMoney(result.unitCost)}</strong>
         </p>
         <p>
           Suggested price:{" "}
-          <strong>{formatMoney(result.suggestedPrice)}</strong>
+          <strong>
+            {hasYieldError || hasMarginError
+              ? "—"
+              : formatMoney(result.suggestedPrice)}
+          </strong>
         </p>
       </div>
+      {result.validationErrors.yieldUnits ? (
+        <p className="ggt-disclaimer">{result.validationErrors.yieldUnits}</p>
+      ) : null}
+      {result.validationErrors.marginPercent ? (
+        <p className="ggt-disclaimer">{result.validationErrors.marginPercent}</p>
+      ) : null}
       <p className="ggt-disclaimer">
         Calculator only — not tax, licensing, or legal advice. Templates are not
         legal advice.

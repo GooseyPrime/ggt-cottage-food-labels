@@ -3,6 +3,7 @@
 import {
   COTTAGE_FOOD_LABELS_PRICE_LABEL,
   COTTAGE_FOOD_LABELS_PRODUCT_NAME,
+  DEMO_UNLOCK_EVENT,
   shopToolPath,
   shopUrl,
   UNLOCK_STORAGE_KEY,
@@ -17,7 +18,7 @@ export function Paywall() {
   function demoUnlock() {
     try {
       localStorage.setItem(UNLOCK_STORAGE_KEY, "1");
-      window.location.reload();
+      window.dispatchEvent(new Event(DEMO_UNLOCK_EVENT));
     } catch {
       /* ignore */
     }

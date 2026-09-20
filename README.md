@@ -3,7 +3,7 @@
 Golden Goose Tools — **Cottage Food Labels**.
 
 - **Free:** cost / pricing calculator (ingredients, packaging, labor hours × rate, overhead %, yield → unit cost + suggested price from margin %)
-- **Paid:** {COTTAGE_FOOD_LABELS_PRICE_LABEL} one-time label pack (`$12` / `1200` cents) — presentational paywall until shop Groundwork allowlists this tool
+- **Paid:** $12 one-time label pack (`$12` / `1200` cents) — presentational paywall until shop Groundwork allowlists this tool
 - **Accent:** Wheat `#c4a27a` (`--ggt-accent`)
 - **Design kit:** `ggt-design-kit` via `github:GooseyPrime/ggt-design-kit` — `@import "ggt-design-kit/src/index.css"`
 - **No Tailwind** — use `ggt-*` classes from the kit

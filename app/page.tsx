@@ -50,10 +50,7 @@ export default function HomePage() {
           <LabelPreview />
         </section>
 
-        <section
-          className="ggt-tally ggt-tally--locked"
-          aria-labelledby="pack-heading"
-        >
+        <section className="ggt-tally" aria-labelledby="pack-heading">
           <h2 id="pack-heading">Label pack</h2>
           <p className="ggt-help">
             Print-ready fields for producer name, home address, telephone,

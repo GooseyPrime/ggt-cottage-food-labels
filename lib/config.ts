@@ -17,6 +17,7 @@ export const ACCENT = "#c4a27a";
 
 /** Presentational unlock flag (device-local). Not a payment receipt. */
 export const UNLOCK_STORAGE_KEY = "ggt-cottage-food-labels-unlocked";
+export const DEMO_UNLOCK_EVENT = "ggt-cottage-food-labels-demo-unlock";
 
 export function shopUrl(): string {
   const raw =

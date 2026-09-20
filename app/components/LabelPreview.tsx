@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { TN } from "@/lib/states";
-import { UNLOCK_STORAGE_KEY } from "@/lib/config";
+import { DEMO_UNLOCK_EVENT, UNLOCK_STORAGE_KEY } from "@/lib/config";
 
 type LabelFields = {
   producerName: string;
@@ -25,11 +25,20 @@ export function LabelPreview() {
   const [unlocked, setUnlocked] = useState(false);
 
   useEffect(() => {
-    try {
-      setUnlocked(localStorage.getItem(UNLOCK_STORAGE_KEY) === "1");
-    } catch {
-      setUnlocked(false);
+    function syncUnlockState() {
+      try {
+        setUnlocked(localStorage.getItem(UNLOCK_STORAGE_KEY) === "1");
+      } catch {
+        setUnlocked(false);
+      }
     }
+
+    syncUnlockState();
+    window.addEventListener(DEMO_UNLOCK_EVENT, syncUnlockState);
+
+    return () => {
+      window.removeEventListener(DEMO_UNLOCK_EVENT, syncUnlockState);
+    };
   }, []);
 
   function setField<K extends keyof LabelFields>(key: K, value: string) {

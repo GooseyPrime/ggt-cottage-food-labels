@@ -16,6 +16,10 @@ export type CostResult = {
   unitCost: number;
   suggestedPrice: number;
   marginAmount: number;
+  validationErrors: {
+    yieldUnits?: string;
+    marginPercent?: string;
+  };
 };
 
 function safeNumber(n: number): number {
@@ -30,22 +34,37 @@ export function calculatePricing(raw: CostInputs): CostResult {
   const laborHours = safeNumber(raw.laborHours);
   const laborRate = safeNumber(raw.laborRate);
   const overheadPercent = safeNumber(raw.overheadPercent);
-  const yieldUnits = Math.max(safeNumber(raw.yieldUnits), 0);
+  const yieldUnits = safeNumber(raw.yieldUnits);
   const marginPercent = safeNumber(raw.marginPercent);
 
   const laborCost = laborHours * laborRate;
   const directCost = ingredientsCost + packagingCost + laborCost;
   const overheadAmount = directCost * (overheadPercent / 100);
   const totalCost = directCost + overheadAmount;
+  const validationErrors: CostResult["validationErrors"] = {};
+
+  if (yieldUnits <= 0) {
+    validationErrors.yieldUnits =
+      "Enter a yield greater than 0 to calculate unit cost and price.";
+  }
+
+  if (marginPercent >= 100) {
+    validationErrors.marginPercent =
+      "Enter a target margin below 100% to calculate a suggested price.";
+  }
+
   const unitCost = yieldUnits > 0 ? totalCost / yieldUnits : 0;
 
-  // suggested = unitCost / (1 - margin/100); when margin >= 100, fall back to unitCost
+  // suggested = unitCost / (1 - margin/100)
   const marginFraction = marginPercent / 100;
   const suggestedPrice =
-    marginFraction >= 1 || unitCost === 0
-      ? unitCost
+    validationErrors.yieldUnits || validationErrors.marginPercent || unitCost === 0
+      ? 0
       : unitCost / (1 - marginFraction);
-  const marginAmount = suggestedPrice - unitCost;
+  const marginAmount =
+    validationErrors.yieldUnits || validationErrors.marginPercent
+      ? 0
+      : suggestedPrice - unitCost;
 
   return {
     laborCost,
@@ -55,6 +74,7 @@ export function calculatePricing(raw: CostInputs): CostResult {
     unitCost,
     suggestedPrice,
     marginAmount,
+    validationErrors,
   };
 }
 
