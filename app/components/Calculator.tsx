@@ -13,6 +13,9 @@ const defaults: CostInputs = {
   marginPercent: 40,
 };
 
+const yieldErrorId = "calculator-yield-error";
+const marginErrorId = "calculator-margin-error";
+
 export function Calculator() {
   const [inputs, setInputs] = useState<CostInputs>(defaults);
 
@@ -93,6 +96,7 @@ export function Calculator() {
             value={inputs.yieldUnits}
             onChange={(e) => setField("yieldUnits", e.target.value)}
             aria-invalid={hasYieldError}
+            aria-describedby={hasYieldError ? yieldErrorId : undefined}
           />
         </label>
         <label className="ggt-field">
@@ -106,6 +110,7 @@ export function Calculator() {
             value={inputs.marginPercent}
             onChange={(e) => setField("marginPercent", e.target.value)}
             aria-invalid={hasMarginError}
+            aria-describedby={hasMarginError ? marginErrorId : undefined}
           />
         </label>
       </div>
@@ -136,10 +141,22 @@ export function Calculator() {
         </p>
       </div>
       {result.validationErrors.yieldUnits ? (
-        <p className="ggt-disclaimer">{result.validationErrors.yieldUnits}</p>
+        <p
+          id={yieldErrorId}
+          className="ggt-disclaimer"
+          role="alert"
+        >
+          {result.validationErrors.yieldUnits}
+        </p>
       ) : null}
       {result.validationErrors.marginPercent ? (
-        <p className="ggt-disclaimer">{result.validationErrors.marginPercent}</p>
+        <p
+          id={marginErrorId}
+          className="ggt-disclaimer"
+          role="alert"
+        >
+          {result.validationErrors.marginPercent}
+        </p>
       ) : null}
       <p className="ggt-disclaimer">
         Calculator only — not tax, licensing, or legal advice. Templates are not

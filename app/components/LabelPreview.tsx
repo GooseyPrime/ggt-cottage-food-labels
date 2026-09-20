@@ -95,6 +95,11 @@ export function LabelPreview() {
           placeholder="Flour, sugar, butter, eggs, chocolate chips, salt…"
         />
       </label>
+      <p className="ggt-disclaimer" aria-live="polite">
+        {unlocked
+          ? "Preview unlocked for this browser."
+          : "Preview locked until checkout goes live or you use Demo unlock."}
+      </p>
 
       <div
         className={`ggt-label-sheet${unlocked ? "" : " ggt-label-sheet--locked"}`}
