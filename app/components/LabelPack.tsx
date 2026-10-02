@@ -17,7 +17,8 @@ import {
 } from "@/lib/label";
 import { STATES, getState } from "@/lib/states";
 
-const API = `${TOOL_PATH}/api`;
+const BASE_PATH = (process.env.NEXT_PUBLIC_BASE_PATH ?? TOOL_PATH).replace(/\/+$/, "");
+const API = `${BASE_PATH}/api`;
 const PRICE = priceLabel();
 
 function LabelSheet({
@@ -121,7 +122,7 @@ export function LabelPack() {
         } catch {
           /* storage unavailable */
         }
-        if (fromUrl) window.history.replaceState(null, "", TOOL_PATH);
+        if (fromUrl) window.history.replaceState(null, "", BASE_PATH || "/");
         if (fromUrl) setNote("Payment confirmed. Your label pack is unlocked on this device.");
       } catch {
         if (fromUrl) setError("We could not confirm that purchase. Please try again.");
