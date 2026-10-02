@@ -61,6 +61,11 @@ describe("verifySale", () => {
     expect((await verifySale("cs_1")).paid).toBe(false);
   });
 
+  it.each(["productId", "toolId"])("requires product even when %s matches", async (field) => {
+    stubFetch(200, { ok: true, paid: true, [field]: "cottage-food-labels" });
+    expect((await verifySale("cs_1")).paid).toBe(false);
+  });
+
   it("rejects an unpaid session", async () => {
     stubFetch(402, { ok: false, paid: false, message: "Payment not completed." });
     expect((await verifySale("cs_1")).message).toBe("Payment not completed.");

@@ -104,14 +104,24 @@ export function LabelPack() {
       try {
         const res = await fetch(`${API}/verify?session_id=${encodeURIComponent(candidate)}`);
         const data = await res.json();
-        if (fromUrl) window.history.replaceState(null, "", TOOL_PATH);
         if (!res.ok || !data.paid) {
-          localStorage.removeItem(SESSION_STORAGE_KEY);
+          if (!fromUrl) {
+            try {
+              localStorage.removeItem(SESSION_STORAGE_KEY);
+            } catch {
+              /* storage unavailable */
+            }
+          }
           if (fromUrl) setError(data.message || "We could not confirm that purchase.");
           return;
         }
-        localStorage.setItem(SESSION_STORAGE_KEY, candidate);
         setSessionId(candidate);
+        try {
+          localStorage.setItem(SESSION_STORAGE_KEY, candidate);
+        } catch {
+          /* storage unavailable */
+        }
+        if (fromUrl) window.history.replaceState(null, "", TOOL_PATH);
         if (fromUrl) setNote("Payment confirmed. Your label pack is unlocked on this device.");
       } catch {
         if (fromUrl) setError("We could not confirm that purchase. Please try again.");
@@ -286,7 +296,12 @@ export function LabelPack() {
                   onChange={(e) => setCopies(clampCopies(Number(e.target.value)))}
                 />
               </label>
-              <button type="button" className="ggt-btn" onClick={() => window.print()}>
+              <button
+                type="button"
+                className="ggt-btn"
+                onClick={() => window.print()}
+                disabled={missing.length > 0}
+              >
                 Print {copies} label{copies === 1 ? "" : "s"}
               </button>
             </div>

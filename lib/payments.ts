@@ -57,7 +57,7 @@ export async function verifySale(sessionId: string): Promise<VerifyResult> {
     });
     const data = await readJson(res);
     if (!data) return { ok: false, paid: false, message: "The shop did not confirm this purchase." };
-    const product = asString(data.product) ?? asString(data.productId) ?? asString(data.toolId);
+    const product = asString(data.product);
     const paidFlag = data.paid === true || asString(data.paymentStatus) === "no_payment_required";
     const paid = res.ok && data.ok === true && paidFlag && product === TOOL_ID;
     return {
