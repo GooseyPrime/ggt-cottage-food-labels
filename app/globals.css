@@ -1,9 +1,5 @@
 @import "ggt-design-kit/src/index.css";
 
-:root {
-  --ggt-accent: #c4a27a;
-}
-
 html,
 body {
   margin: 0;
@@ -61,7 +57,7 @@ body {
   display: grid;
   place-items: center;
   background: color-mix(in srgb, var(--ggt-void) 55%, transparent);
-  color: var(--ggt-accent);
+  color: var(--ggt-accent-text, var(--ggt-accent));
   font-family: var(--font-mono), ui-monospace, monospace;
   font-size: 12px;
   letter-spacing: 0.14em;

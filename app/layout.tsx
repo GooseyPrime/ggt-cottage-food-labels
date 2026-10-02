@@ -25,6 +25,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html
       lang="en"
+      data-ggt-theme="wheat"
       className={`${display.variable} ${sans.variable} ${mono.variable}`}
     >
       <body>{children}</body>
