@@ -18,7 +18,7 @@ const mono = IBM_Plex_Mono({
 export const metadata: Metadata = {
   title: "Golden Goose Tools — Cottage Food Labels",
   description:
-    "Free cost and pricing calculator for cottage food makers. Unlock a $12 label pack with per-state wording templates. Not legal advice.",
+    "Free cost and pricing calculator for cottage food makers. Unlock a one-time label pack with per-state wording templates. Not legal advice.",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
